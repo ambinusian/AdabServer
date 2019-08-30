@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Socket Test</title>
+</head>
+<body>
+    Room ID<input id="room_id" type="text"><button id="tekan" type="button">Join</button><br>
+    <textarea id="text" rows="1" cols="41"></textarea><button id="pencet" type="button">Send</button>
+    <h1>Haaa mari kita chat</h1>
+    <ul id="chat"></ul>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        let pencet = document.getElementById('pencet');
+        let text = document.getElementById('text');
+        let roomId = document.getElementById('room_id');
+        let chat = document.getElementById('chat');
+        let tekan = document.getElementById('tekan');
+        const socket = io();
+
+        let shouldConnect = true;
+
+        tekan.onclick = () => {
+            if (shouldConnect) {
+                socket.emit('join room', roomId.value);
+                tekan.innerText = "Disconnect";
+            } else {
+                socket.emit('disconnect from room');
+                tekan.innerText = "Join";
+            }
+            shouldConnect = !shouldConnect;
+        };
+
+        pencet.onclick = () => {
+            socket.emit('message', text.value);
+            text.value = "";
+        };
+
+        socket.on('message', (msg) => {
+            chat.innerHTML += "<p>" + msg + "</p>"
+        });
+    </script>
+</body>
+</html>
