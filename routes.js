@@ -28,5 +28,5 @@ module.exports = function(app) {
         .post(controller.endSession);
 
     app.route('/apiToken')
-        .get(controller.apiToken);
+        .post(controller.apiToken);
 };
