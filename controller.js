@@ -81,7 +81,7 @@ exports.profile = (req, res) => {
 };
 
 exports.classDetails = (req, res) => {
-    let sql = "SELECT COUNT(*) FROM master_user WHERE tokenid = ?";
+    let sql = "SELECT `username` FROM master_user WHERE tokenid = ?";
     let tokenId = req.body.token_id;
     let transactionId = req.body.transaction_id;
 
@@ -160,5 +160,29 @@ exports.endSession = (req, res) => {
 };
 
 exports.apiToken = (req, res) => {
-    response.json(__dirname + '/tokentokenan.json');
+    let sql = "SELECT `username` FROM `master_user` WHERE `tokenid` = ?";
+    let tokenId = req.body.token_id;
+    let transactionId = req.body.transaction_id;
+
+    connection.query(sql, [tokenId], (err, result) => {
+        if (err) throw err;
+        if (result.length === 1) {
+            if (result[0].length === 5 && result[0].charAt(0) === 'D') {
+                let sql1 = "SELECT * FROM (`master_user` INNER JOIN `lecture_transaction` ON (`master_user`.`username` = `lecture_transaction`.`lecturer_code` AND `lecture_transaction`.`transaction_id` = ?)) WHERE `master_user`.`username` = ?";
+                let lecturerCode = result[0];
+                connection.query(sql1, [transactionId, lecturerCode], (error, results) => {
+                    if (error) throw error;
+                    if (results.length === 1) {
+                        response.json(__dirname + '/token.json');
+                    } else {
+                        response.unauthorized({"error_message": "Unauthorized", "error_code": 2}, res);
+                    }
+                });
+            } else {
+                response.unauthorized({"error_message": "Unauthorized", "error_code": 2}, res);
+            }
+        } else {
+            response.unauthorized({"error_message": "Unauthorized", "error_code": 2}, res);
+        }
+    });
 };
