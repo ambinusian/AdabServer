@@ -175,14 +175,14 @@ exports.apiToken = (req, res) => {
                     if (results.length === 1) {
                         response.json(__dirname + '/token.json');
                     } else {
-                        response.unauthorized({"error_message": "Unauthorized", "error_code": 2}, res);
+                        response.unauthorized({"error_message": "Unauthorized", "error_code": 3}, res);
                     }
                 });
             } else {
                 response.unauthorized({"error_message": "Unauthorized", "error_code": 2}, res);
             }
         } else {
-            response.unauthorized({"error_message": "Unauthorized", "error_code": 2}, res);
+            response.unauthorized({"error_message": "Unauthorized", "error_code": 1}, res);
         }
     });
 };
