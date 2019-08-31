@@ -167,9 +167,9 @@ exports.apiToken = (req, res) => {
     connection.query(sql, [tokenId], (err, result) => {
         if (err) throw err;
         if (result.length === 1) {
-            if (result[0].length === 5 && result[0].charAt(0) === 'D') {
+            if (result[0].username.length === 5 && result[0].username.charAt(0) === 'D') {
                 let sql1 = "SELECT * FROM (`master_user` INNER JOIN `lecture_transaction` ON (`master_user`.`username` = `lecture_transaction`.`lecturer_code` AND `lecture_transaction`.`transaction_id` = ?)) WHERE `master_user`.`username` = ?";
-                let lecturerCode = result[0];
+                let lecturerCode = result[0].username;
                 connection.query(sql1, [transactionId, lecturerCode], (error, results) => {
                     if (error) throw error;
                     if (results.length === 1) {
