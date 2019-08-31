@@ -65,3 +65,6 @@ conn.js
 
 # .idea
 .idea
+
+# api token
+token.json
