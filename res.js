@@ -40,8 +40,3 @@ exports.jpeg = function(data, res) {
     res.set('Content-Type', 'image/jpeg').send(data);
     res.end();
 };
-
-exports.json = function(path, res) {
-    res.sendFile(path);
-    res.end();
-};

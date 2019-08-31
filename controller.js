@@ -173,7 +173,8 @@ exports.apiToken = (req, res) => {
                 connection.query(sql1, [transactionId, lecturerCode], (error, results) => {
                     if (error) throw error;
                     if (results.length === 1) {
-                        response.json(__dirname + '/token.json');
+                        const data = require('./token.json');
+                        response.ok(data, res);
                     } else {
                         response.unauthorized({"error_message": "Unauthorized", "error_code": 3}, res);
                     }
