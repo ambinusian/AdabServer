@@ -141,7 +141,6 @@ exports.endSession = (req, res) => {
     let sql = "SELECT `username` FROM `master_user` WHERE `tokenid` = ?";
     let tokenId = req.body.token_id;
     let transactionId = req.body.transaction_id;
-    let fileString = req.body.file_string;
 
     connection.query(sql, [tokenId], (err, result) => {
         if (err) throw err;
@@ -155,26 +154,7 @@ exports.endSession = (req, res) => {
                         let sql1 = "UPDATE `courses_transaction` SET `is_live` = 0, `is_done` = 1 WHERE `transaction_Id` = ?";
                         connection.query(sql1, [transactionId], (error, results) => {
                             if (error) throw error;
-                            let sql2 = "SELECT `course_code`, `class_type`, `session`, `topic`, DATE_FORMAT(`transaction_date`, '%Y-%m-%d') as transaction_date FROM `courses_transaction` WHERE `transaction_Id` = ?";
-                            connection.query(sql2, [transactionId], (e, r) => {
-                                if (e) throw e;
-                                const courseCode = r[0].course_code;
-                                const classType = r[0].class_type;
-                                const session = r[0].session;
-                                const topic = r[0].topic;
-                                const transactionDate = r[0].transaction_date;
-                                const filePath = './' + courseCode + '/' + courseCode + '_' + classType + session + '_' + topic + "_" + transactionDate + "_" + transactionId;
-
-                                const dir = './' + courseCode;
-                                if (!fs.existsSync(dir)) {
-                                    fs.mkdirSync(dir);
-                                }
-
-                                fs.writeFile(filePath, fileString, function(e1) {
-                                    if (e1) throw e1;
-                                    response.ok({'message': 'ok'}, res);
-                                });
-                            });
+                            response.ok({'message': 'ok'}, res);
                         });
                     } else {
                         response.unauthorized({"error_message": "Unauthorized", "error_code": 3}, res);
