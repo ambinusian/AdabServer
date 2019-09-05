@@ -29,4 +29,7 @@ module.exports = function(app) {
 
     app.route('/apiToken')
         .post(controller.apiToken);
+
+    app.route('/user/fetchRemoteFile')
+        .post(controller.getFile);
 };

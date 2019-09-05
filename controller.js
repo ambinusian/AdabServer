@@ -197,3 +197,35 @@ exports.apiToken = (req, res) => {
         }
     });
 };
+
+exports.getFile = (req, res) => {
+    let sql = "SELECT `username` FROM `master_user` WHERE `tokenid` = ?";
+    let tokenId = req.body.token_id;
+    let transactionId = req.body.transaction_id;
+
+    connection.query(sql, [tokenId], (err, result) => {
+        if (err) return err;
+        if (result.length === 1) {
+            let sql1 = "SELECT `course_code`, `class_type`, `session`, `topic`, DATE_FORMAT(`transaction_date`, '%Y-%m-%d') as transaction_date FROM `courses_transaction` WHERE `transaction_Id` = ?";
+            connection.query(sql1, [transactionId], (error, results) => {
+                if (error) throw error;
+                let courseCode = results[0].course_code;
+                let classType = results[0].class_type;
+                let session = results[0].session;
+                let topic = results[0].topic;
+                let transactionDate = results[0].transaction_date;
+                let filePath = './' + courseCode + '/' + courseCode + '_' + classType + session + '_' + topic + "_" + transactionDate + "_" + transactionId;
+
+                if (fs.existsSync(filePath)) {
+                    fs.readFile(filePath, function(e, d) {
+                        response.ok({"file_string": d.toString()}, res);
+                    });
+                } else {
+                    response.notFound(res);
+                }
+            });
+        } else {
+            response.unauthorized({"error_message": "Unauthorized", "error_code": 1}, res);
+        }
+    });
+};
