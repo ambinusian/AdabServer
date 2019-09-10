@@ -206,8 +206,8 @@ exports.getFile = (req, res) => {
     connection.query(sql, [tokenId], (err, result) => {
         if (err) return err;
         if (result.length === 1) {
-            let sql1 = "SELECT `course_code`, `class_type`, `session`, `topic`, DATE_FORMAT(`transaction_date`, '%Y-%m-%d') as transaction_date FROM `courses_transaction` WHERE `transaction_Id` = ?";
-            connection.query(sql1, [transactionId], (error, results) => {
+            let sql2 = "SELECT `course_code`, `class_type`, `session`, `topic`, DATE_FORMAT(`transaction_date`, '%Y-%m-%d') as transaction_date FROM `courses_transaction` WHERE `transaction_Id` = ?";
+            connection.query(sql2, [transactionId], (error, results) => {
                 if (error) throw error;
                 let courseCode = results[0].course_code;
                 let classType = results[0].class_type;

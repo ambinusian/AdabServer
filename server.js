@@ -70,6 +70,10 @@ io.on('connection', (socket) => {
         });
     });
 
+    socket.on('discussion', (msg) => {
+        io.to(connectedRoomId).emit('discussion', msg);
+    });
+
     socket.on('disconnect from room', () => {
         socket.leave(connectedRoomId, () => {
             connectedRoomId = null;
