@@ -46,7 +46,7 @@ io.on('connection', (socket) => {
 
             if (fs.existsSync(filePath)) {
                 fs.readFile(filePath, function(err, data) {
-                    io.to(roomId).emit('message', data.toString());
+                    io.to(roomId).emit('file', data.toString());
                 });
             }
         });
