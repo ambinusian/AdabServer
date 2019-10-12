@@ -7,7 +7,8 @@ const randomstring = require('randomstring');
 const fs = require('fs');
 
 exports.index = (req, res) => {
-    res.sendFile(__dirname + '/chat.html');
+    // res.sendFile(__dirname + '/chat.html');
+    res.send('AdabServer &copy 2019 Bearcats.');
 };
 
 exports.login = (req, res) => {
