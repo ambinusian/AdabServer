@@ -2,9 +2,10 @@
 
 module.exports = function(app) {
     var controller = require('./controller');
-    
+    var view = require('./view');
+
     app.route('/')
-        .get(controller.index);
+        .get(view.index);
 
     app.route('/user/login')
         .post(controller.login);
@@ -32,4 +33,10 @@ module.exports = function(app) {
 
     app.route('/user/fetchRemoteFile')
         .post(controller.getFile);
+
+    app.route('/admin')
+        .get(view.admin);
+
+    app.route('/admin/login')
+        .get(view.adminLogin);
 };

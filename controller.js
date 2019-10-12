@@ -6,11 +6,6 @@ const md5 = require('md5');
 const randomstring = require('randomstring');
 const fs = require('fs');
 
-exports.index = (req, res) => {
-    // res.sendFile(__dirname + '/chat.html');
-    res.send('AdabServer &copy 2019 Bearcats.');
-};
-
 exports.login = (req, res) => {
     let sql = "SELECT `username`, `privilege` FROM `master_user` WHERE `username` = ? AND `password` = ?";
     let username = req.body.username;
